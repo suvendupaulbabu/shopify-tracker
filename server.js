@@ -9,12 +9,18 @@ connectDB();
 
 const app = express();
 
-// Enable CORS for your Shopify domain
-app.use(cors({
-  origin: "https://pueronline.in", // Allow only Shopify site
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: "Content-Type,Authorization"
-}));
+// CORS Middleware (Allow Shopify domain)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://pueronline.in"); // Allow only this domain
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  next();
+});
 
 app.use(express.json());
 app.use("/api", trackerRoutes);
