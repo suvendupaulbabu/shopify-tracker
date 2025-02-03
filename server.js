@@ -8,7 +8,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// Enable CORS for your Shopify domain
+app.use(cors({
+  origin: "https://pueronline.in", // Allow only Shopify site
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization"
+}));
+
 app.use(express.json());
 app.use("/api", trackerRoutes);
 
